@@ -241,11 +241,11 @@ public class MdPageGeneratorMojo extends AbstractMojo {
 
                 dto.htmlFile = new File(
                         recursiveInput
-                                ? outputDirectory + File.separator + file.getParentFile().getPath().substring(inputDirectory.getPath().length()) + File.separator + file.getName().replaceAll("." + inputFileExtension, ".html")
-                                : outputDirectory + File.separator + file.getName().replaceAll("." + inputFileExtension, ".html")
+                                ? outputDirectory + File.separator + replacePrefix(file.getParentFile().getPath().substring(inputDirectory.getPath().length())) + File.separator + replacePrefix(file.getName()).replaceAll("." + inputFileExtension, ".html")
+                                : outputDirectory + File.separator + replacePrefix(file.getName()).replaceAll("." + inputFileExtension, ".html")
                 );
 
-                getLog().debug("File htmlFile() " + dto.htmlFile);
+                getLog().debug("File htmlFile() " + dto.htmlFile.getAbsolutePath());
 
                 markdownDTOs.add(dto);
             }
@@ -254,6 +254,10 @@ public class MdPageGeneratorMojo extends AbstractMojo {
         }
 
         return true;
+    }
+
+    private String replacePrefix(String path) {
+        return path.replaceAll("[0-9]{2}_", "");
     }
 
     /**
